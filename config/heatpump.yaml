@@ -1,0 +1,23 @@
+# datacollectionintervall defines the interval in seconds, in which the average values are calculated
+# default 60 seconds
+datacollectioninterval: 300
+
+# debug activates the debug level and the output device/file
+debug:
+  # log file e.g. /tmp/emu.log; stderr; stdout
+  # default: stderr
+  file: stderr
+  # flag: (default: standard)
+  #       standard (default) >> Warning | Info | Error | Fatal
+  #       trace              >> Warning | Info | Error | Fatal | Debug | Trace
+  #       debug              >> Warning | Info | Error | Fatal | Debug
+  flag: debug
+
+# webserver configuration
+webserver:
+  # port defines the port number (default: 4000)
+  port: 4010
+  # enable/disable webservices (default: disabled)
+  webservices:
+    version: true
+    currentdata: true
