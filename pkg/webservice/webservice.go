@@ -20,7 +20,7 @@ func InitWebService() (err error) {
 		"version":     httpGetVersion,
 		"currentdata": httpReadCurrentData,
 	} {
-		if ok, set := global.Config.Webserver.Webservices[pattern]; ok && set {
+		if set, ok := global.Config.Webserver.Webservices[pattern]; ok && set {
 			http.HandleFunc("/"+pattern, f)
 		}
 	}
@@ -107,7 +107,7 @@ func httpReadCurrentData(w http.ResponseWriter, r *http.Request) {
 	func() {
 		global.Measurements.RLock()
 		defer global.Measurements.RUnlock()
-		j, err = json.MarshalIndent(global.Measurements, "", "  ")
+		j, err = json.MarshalIndent(&global.Measurements, "", "  ")
 	}()
 
 	if err != nil {

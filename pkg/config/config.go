@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"heatpump/global"
@@ -28,9 +29,9 @@ func init() {
 	var err error
 	var flags = flagm{
 		"version":   {flagType: flagBool, usage: "print version and exit", defaultValue: false},
-		"debugFile": {flagType: flagString, usage: "log file eg. /opt/womat/log/" + global.MODULE + `.log (default "stderr")`, defaultValue: ""},
+		"debugFile": {flagType: flagString, usage: "log file eg. " + filepath.Join("/opt/womat/log/"+global.MODULE+".log") + `(default "stderr")`, defaultValue: ""},
 		"debugFlag": {flagType: flagString, usage: `"enable debug information (standard | trace | debug) (default "standard")`, defaultValue: ""},
-		"config":    {flagType: flagString, usage: "Config File", defaultValue: "/opt/womat/config/" + global.MODULE + ".yaml"},
+		"config":    {flagType: flagString, usage: "Config File", defaultValue: filepath.Join("/opt/womat/config/" + global.MODULE + ".yaml")},
 	}
 	var configFile = yamlStruct{
 		DataCollectionInterval: defaultInterval,
