@@ -1,8 +1,9 @@
 package global
 
 import (
+	"heatpump/pkg/heatpump"
 	"io"
-	"sync"
+	"log"
 	"time"
 )
 
@@ -24,47 +25,28 @@ type DebugConf struct {
 }
 
 type WebserverConf struct {
-	Port        int             `yaml:"port"`
-	Webservices map[string]bool `yaml:"webservices"`
+	Port        int
+	Webservices map[string]bool
 }
 
 type Configuration struct {
 	DataCollectionInterval time.Duration
+	BackupInterval         time.Duration
+	DataFile               string
 	Debug                  DebugConf
 	Webserver              WebserverConf
-}
-
-const (
-	on  = "on"
-	off = "off"
-)
-
-type State string
-
-type HeatPump struct {
-	sync.RWMutex
-	TimeStamp                    time.Time
-	Power                        float64
-	State                        State
-	Runtime                      time.Duration
-	BrineFlow, BrineReturn       float64
-	BrinePumpState               State
-	BrinePumpRuntime             time.Duration
-	HeatingFlow, HeatingReturn   float64
-	HeatingPumpState             State
-	HeatingPumpRuntime           time.Duration
-	HotWaterFlow, HotWaterReturn float64
-	HotWaterPumpState            State
-	HotWaterPumpRuntime          time.Duration
+	UVS232URL              string
+	MeterURL               string
 }
 
 // Config holds the global configuration
 var Config Configuration
-var Measurements HeatPump
+
+// Measurements hold all measured  heat pump values
+var Measurements *heatpump.Measurements
 
 func init() {
-	Measurements = HeatPump{}
-	Config = Configuration{
-		Webserver: WebserverConf{Webservices: map[string]bool{}},
-	}
+	log.Println("run init() from global.go (global)")
+
+	Config = Configuration{Webserver: WebserverConf{Webservices: map[string]bool{}}}
 }

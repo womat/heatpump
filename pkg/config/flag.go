@@ -2,30 +2,30 @@ package config
 
 import "flag"
 
-type flagStruct struct {
-	flagType     int
-	value        interface{}
-	defaultValue interface{}
-	usage        string
+type FlagStruct struct {
+	FlagType     int
+	Value        interface{}
+	DefaultValue interface{}
+	Usage        string
 }
 
-type flagm map[string]flagStruct
+type Flag map[string]FlagStruct
 
 const (
-	flagInt = iota
-	flagBool
-	flagString
+	FlagInt = iota
+	FlagBool
+	FlagString
 )
 
-func parse(flags flagm) {
+func Parse(flags Flag) {
 	for name, f := range flags {
-		switch f.flagType {
-		case flagInt:
-			f.value = flag.Int(name, f.defaultValue.(int), f.usage)
-		case flagBool:
-			f.value = flag.Bool(name, f.defaultValue.(bool), f.usage)
-		case flagString:
-			f.value = flag.String(name, f.defaultValue.(string), f.usage)
+		switch f.FlagType {
+		case FlagInt:
+			f.Value = flag.Int(name, f.DefaultValue.(int), f.Usage)
+		case FlagBool:
+			f.Value = flag.Bool(name, f.DefaultValue.(bool), f.Usage)
+		case FlagString:
+			f.Value = flag.String(name, f.DefaultValue.(string), f.Usage)
 		}
 		flags[name] = f
 	}
@@ -33,16 +33,16 @@ func parse(flags flagm) {
 	flag.Parse()
 }
 
-func (f flagm) bool(c string) bool {
+func (f Flag) Bool(c string) bool {
 	if f, ok := f[c]; ok {
-		return castToBool(f.value)
+		return castToBool(f.Value)
 	}
 	return false
 }
 
-func (f flagm) string(c string) string {
+func (f Flag) String(c string) string {
 	if f, ok := f[c]; ok {
-		return castToString(f.value)
+		return castToString(f.Value)
 	}
 
 	return ""
